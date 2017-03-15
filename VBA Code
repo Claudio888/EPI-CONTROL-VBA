@@ -1,0 +1,59 @@
+Private Sub Executar_Click()
+
+    Dim OutApp As Outlook.Application
+    Dim OutMail As Outlook.MailItem
+    Dim texto As String
+    Dim iLinha As Integer
+    Dim Quant As Integer
+    
+    
+    
+    Set OutApp = CreateObject("Outlook.Application") 'Seta o aplicativo do outlook
+    Set OutMail = OutApp.CreateItem(olMailItem) 'Cria um novo email no app outlook
+
+    Quant = 500 'Quantidade alteravel de celulas que voce quer que ele leia
+    'linha = ActiveCell.Row - 1
+    
+   
+    For iLinha = 3 To Quant 'laço que começa da linha 3 da planilha de exemplo
+    
+        If Plan1.Cells(iLinha, 6) = "Vencido" Then 'Se na linha em loop(inicio em 3) e coluna 6 que indica a data = "Vencido" entao envie o email
+            texto = "Prezado(a) " & Plan1.Cells(iLinha, 1) & "," & vbCrLf & vbCrLf & _
+                    "Seu EPI (" & Plan1.Cells(iLinha, 3) & ")atingiu o prazo para substituição(" & _
+                    Plan1.Cells(iLinha, 4) & "),por gentileza se dirigir ao almoxarifado para troca.    " & vbCrLf & vbCrLf & _
+                    "Lembre-se: Antes da substituição, pedimos que avalie a qualidade do EPI, se não for necessaria,imprima este email, assinale o campo abaixo e entregue para o almoxarifado." & vbCrLf & vbCrLf & _
+                    "(  )Declaro que não foi necessario a substituição do EPI mencionado acima." & vbCrLf & vbCrLf & _
+                    "       Nome:_____________________________________________ " & vbCrLf & vbCrLf & vbCrLf & _
+                    " Assinatura:_____________________________________________ " & vbCrLf & vbCrLf & _
+                    "Agradecemos a atenção. " & vbCrLf & vbCrLf & _
+                    "Segurança do Trabalho."
+                    
+          
+            
+            OutMail.To = Plan1.Cells(iLinha, 1) 'Identifica e escolhe o destinatario
+            OutMail.Subject = "Renovação de EPI" ' Define o assunto
+            OutMail.Body = texto 'Corpo do email que é o texto escrito acima
+            OutMail.Send ' Send para enviar o email sem abrir o Outlook/display para mostrar o novo email
+            
+            
+            
+        On Error GoTo 0 'se der erro pare
+
+        Set OutMail = OutApp.CreateItem(olMailItem)
+        Set OutApp = CreateObject("Outlook.Application")
+     
+        
+           
+        
+        End If
+        
+         
+            
+        
+            
+     Next
+    
+        MsgBox "Execução Finalizada"
+
+
+End Sub
